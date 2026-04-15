@@ -1,0 +1,568 @@
+
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/outfit@5.0.12/400.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/outfit@5.0.12/600.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fontsource/outfit@5.0.12/700.css" rel="stylesheet">
+
+<div style="padding:0.5rem 0;">
+<div id="app" style="background:#f0f4f8;border-radius:16px;overflow:hidden;font-family:'Outfit',system-ui,sans-serif;color:#0f172a;">
+<style>
+#app *{box-sizing:border-box;margin:0;padding:0;}
+#app input,#app select{background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;color:#0f172a;font-size:13px;font-family:'Outfit',system-ui,sans-serif;padding:8px 10px;width:100%;outline:none;transition:border-color .2s;}
+#app input:focus,#app select:focus{border-color:#2563eb;}
+#app select option{background:#fff;color:#0f172a;}
+.tab-btn{padding:8px 22px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .2s;font-family:'Outfit',system-ui,sans-serif;}
+.tab-btn.active{background:#1e3a8a;color:#fff;}
+.tab-btn:not(.active){background:transparent;color:#64748b;}
+.tab-btn:not(.active):hover{background:#e2e8f0;color:#1e3a8a;}
+.dir-badge{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #e2e8f0;border-radius:20px;padding:4px 12px 4px 8px;font-size:12px;font-weight:700;color:#1e3a8a;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.dir-badge:hover{border-color:#2563eb;background:#eff6ff;}
+.swap-icon{font-size:14px;transition:transform .35s;}
+.swap-icon.flipped{transform:rotate(180deg);}
+.scheme-card{background:#fff;border:2px solid #e2e8f0;border-radius:10px;padding:11px 13px;cursor:pointer;transition:all .2s;flex:1;}
+.scheme-card:hover:not(.disabled){border-color:#93c5fd;background:#f8fbff;}
+.scheme-card.sel-ct{border-color:#2563eb;background:#eff6ff;}
+.scheme-card.sel-inst{border-color:#0d9488;background:#f0fdfa;}
+.scheme-card.sel-dd{border-color:#7c3aed;background:#faf5ff;}
+.scheme-card.disabled{opacity:.38;cursor:not-allowed;}
+.bearer-btn{background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;color:#64748b;font-size:12px;font-weight:600;padding:8px 6px;cursor:pointer;flex:1;text-align:center;transition:all .2s;font-family:'Outfit',system-ui,sans-serif;}
+.bearer-btn.active{border-color:#2563eb;color:#2563eb;background:#eff6ff;}
+.run-btn{width:100%;padding:13px;background:#1e3a8a;color:#fff;font-size:14px;font-weight:700;border:none;border-radius:10px;cursor:pointer;letter-spacing:.02em;transition:all .2s;font-family:'Outfit',system-ui,sans-serif;}
+.run-btn:hover{background:#1d4ed8;transform:translateY(-1px);}
+.metric-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px 16px;}
+.lbl{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:5px;}
+.divider{border:none;border-top:1px solid #f1f5f9;margin:14px 0;}
+.insight{border-radius:8px;padding:10px 13px;font-size:12px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;line-height:1.5;}
+.insight-warn{background:#fefce8;border:1px solid #fde68a;}
+.insight-danger{background:#fff1f2;border:1px solid #fecdd3;}
+.insight-info{background:#eff6ff;border:1px solid #bfdbfe;}
+.insight-success{background:#f0fdf4;border:1px solid #bbf7d0;}
+.insight-icon{font-size:14px;flex-shrink:0;line-height:1.5;}
+.risk-bar{background:#f1f5f9;border-radius:4px;height:5px;margin-top:4px;overflow:hidden;}
+.risk-fill{height:5px;border-radius:4px;transition:width 1s ease;}
+.quick-amt{background:#fff;border:1.5px solid #e2e8f0;border-radius:6px;color:#475569;font-size:11px;font-weight:600;padding:4px 0;cursor:pointer;flex:1;font-family:'Outfit',system-ui,sans-serif;transition:all .2s;}
+.quick-amt:hover{border-color:#93c5fd;color:#2563eb;}
+.section-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#94a3b8;margin-bottom:8px;}
+.field-label{font-size:11px;font-weight:600;color:#64748b;margin-bottom:4px;}
+.fade-in{animation:fadeUp .35s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+</style>
+
+<!-- Header -->
+<div style="background:#1e3a8a;padding:18px 26px 16px;display:flex;justify-content:space-between;align-items:center;">
+  <div>
+    <div style="font-size:10px;letter-spacing:.12em;color:#93c5fd;font-weight:700;text-transform:uppercase;margin-bottom:3px;">SEPA Cross-Border Simulator · D08</div>
+    <div style="font-size:19px;font-weight:700;color:#fff;letter-spacing:-.01em;">IE ⇄ IT Payment Scenario Analysis</div>
+  </div>
+  <div style="text-align:right;">
+    <div style="font-size:11px;color:#93c5fd;">Data-driven · ML-informed</div>
+    <div style="font-size:13px;color:#bfdbfe;font-weight:600;">749,706 real transactions</div>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div style="background:#fff;border-bottom:2px solid #f1f5f9;padding:12px 26px;display:flex;align-items:center;gap:6px;">
+  <button class="tab-btn active" id="tab-ind" onclick="switchTab('individual')">Individual</button>
+  <button class="tab-btn" id="tab-corp" onclick="switchTab('corporate')">Corporate</button>
+  <div style="margin-left:auto;font-size:11px;color:#94a3b8;">Pricing symmetric: IE→IT & IT→IE confirmed identical</div>
+</div>
+
+<!-- Body grid -->
+<div style="display:grid;grid-template-columns:352px 1fr;">
+
+<!-- ===== LEFT PANEL ===== -->
+<div style="background:#fff;border-right:1.5px solid #f1f5f9;padding:20px;display:flex;flex-direction:column;gap:14px;">
+
+  <!-- Route with direction toggle -->
+  <div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div class="section-title" style="margin-bottom:0;">Transfer Route</div>
+      <button class="dir-badge" id="dir-badge" onclick="swapDirection()">
+        <span id="dir-label-short">🇮🇪 IE → IT 🇮🇹</span>
+        <span class="swap-icon" id="swap-icon">⇄</span>
+      </button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div>
+        <div class="field-label" id="origin-lbl">Origin — Ireland 🇮🇪</div>
+        <select id="origin"></select>
+      </div>
+      <div>
+        <div class="field-label" id="dest-lbl">Destination — Italy 🇮🇹</div>
+        <select id="dest"></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDIVIDUAL fields -->
+  <div id="ind-fields">
+    <div class="section-title">Sender Profile</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+      <div>
+        <div class="field-label">Age Group</div>
+        <select id="ind-age">
+          <option value="u35">Under 35</option>
+          <option value="35-54">35 – 54</option>
+          <option value="55-74">55 – 74</option>
+          <option value="75+">75 and over</option>
+        </select>
+      </div>
+      <div>
+        <div class="field-label">Primary Channel</div>
+        <select id="ind-channel" onchange="onChannelChange()">
+          <option value="Mobile App">Mobile App</option>
+          <option value="Web Portal">Web Portal</option>
+          <option value="Branch">Branch</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div>
+        <div class="field-label" id="psp-type-lbl">Sender PSP Type</div>
+        <select id="ind-psp-type" onchange="onPspTypeChange()">
+          <option value="Major Bank">Major Bank</option>
+          <option value="Credit Union">Credit Union</option>
+          <option value="Neobank">Neobank</option>
+          <option value="Postal">Postal Service</option>
+        </select>
+      </div>
+      <div>
+        <div class="field-label" id="recv-psp-lbl">Receiver PSP</div>
+        <select id="ind-recv-psp"></select>
+      </div>
+    </div>
+    <div style="margin-top:8px;">
+      <div class="field-label" id="send-psp-lbl">Sender Bank / Institution</div>
+      <select id="ind-send-psp"></select>
+    </div>
+  </div>
+
+  <!-- CORPORATE fields -->
+  <div id="corp-fields" style="display:none;">
+    <div class="section-title">Corporate Profile</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+      <div>
+        <div class="field-label">Company Type</div>
+        <select id="corp-type">
+          <option>SME</option><option>Large Corporation</option>
+          <option>Financial Institution</option><option>Public Sector</option>
+        </select>
+      </div>
+      <div>
+        <div class="field-label">Transaction Purpose</div>
+        <select id="corp-purpose">
+          <option value="SUPP">Supplier Payment</option><option value="SALA">Payroll (SALA)</option>
+          <option value="TRAD">Trade Finance</option><option value="COMM">Commission</option>
+          <option value="GDDS">Goods Purchase</option><option value="SCVE">Services</option>
+          <option value="OTHR">Other</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div>
+        <div class="field-label" id="corp-send-lbl">Sender Bank</div>
+        <select id="corp-send-psp"></select>
+      </div>
+      <div>
+        <div class="field-label" id="corp-recv-lbl">Receiver Bank</div>
+        <select id="corp-recv-psp"></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Amount -->
+  <div>
+    <div class="section-title">Amount</div>
+    <div style="position:relative;">
+      <span style="position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#64748b;font-size:13px;font-weight:700;">EUR</span>
+      <input type="number" id="amount" value="500" min="0.01" max="100000" style="padding-left:46px;font-size:17px;font-weight:700;color:#0f172a;">
+    </div>
+    <div style="display:flex;gap:5px;margin-top:6px;">
+      <button class="quick-amt" onclick="setAmt(100)">€100</button>
+      <button class="quick-amt" onclick="setAmt(500)">€500</button>
+      <button class="quick-amt" onclick="setAmt(2000)">€2k</button>
+      <button class="quick-amt" onclick="setAmt(10000)">€10k</button>
+      <button class="quick-amt" onclick="setAmt(50000)">€50k</button>
+    </div>
+  </div>
+
+  <!-- Scheme -->
+  <div>
+    <div class="section-title">Payment Scheme</div>
+    <div style="display:flex;gap:7px;">
+      <div class="scheme-card sel-ct" id="card-CT" onclick="selectScheme('SEPA_CT')">
+        <div style="font-size:11px;font-weight:700;color:#2563eb;margin-bottom:1px;">CT</div>
+        <div style="font-size:12px;font-weight:700;color:#1e293b;">Credit Transfer</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:2px;">≈ 24 hours</div>
+      </div>
+      <div class="scheme-card" id="card-Inst" onclick="trySelectInst()">
+        <div style="font-size:11px;font-weight:700;color:#0d9488;margin-bottom:1px;">INST</div>
+        <div style="font-size:12px;font-weight:700;color:#1e293b;">Instant</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:2px;">&lt; 10 seconds</div>
+        <div id="inst-block-note" style="display:none;font-size:9px;color:#ef4444;font-weight:700;margin-top:3px;">🚫 Branch only</div>
+      </div>
+      <div class="scheme-card" id="card-DD" onclick="selectScheme('SEPA_DD')">
+        <div style="font-size:11px;font-weight:700;color:#7c3aed;margin-bottom:1px;">DD</div>
+        <div style="font-size:12px;font-weight:700;color:#1e293b;">Direct Debit</div>
+        <div style="font-size:10px;color:#94a3b8;margin-top:2px;">22 – 50 hours</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charge bearer -->
+  <div>
+    <div class="section-title">Fee Arrangement</div>
+    <div style="display:flex;gap:6px;">
+      <button class="bearer-btn active" id="btn-SHA" onclick="selectBearer('SHA')">
+        <div style="font-size:13px;font-weight:700;">SHA</div>
+        <div style="font-size:9px;margin-top:1px;">Shared</div>
+      </button>
+      <button class="bearer-btn" id="btn-OUR" onclick="selectBearer('OUR')">
+        <div style="font-size:13px;font-weight:700;">OUR</div>
+        <div style="font-size:9px;margin-top:1px;">Sender pays all</div>
+      </button>
+      <button class="bearer-btn" id="btn-BEN" onclick="selectBearer('BEN')">
+        <div style="font-size:13px;font-weight:700;">BEN</div>
+        <div style="font-size:9px;margin-top:1px;">Deduct from amount</div>
+      </button>
+    </div>
+  </div>
+
+  <div style="flex:1;min-height:8px;"></div>
+  <button class="run-btn" onclick="simulate()">Run Analysis →</button>
+</div>
+
+<!-- ===== RIGHT PANEL ===== -->
+<div id="right-panel" style="padding:22px;background:#f8fafc;">
+  <div id="placeholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:480px;gap:14px;text-align:center;">
+    <div style="width:60px;height:60px;border-radius:50%;background:#e0e7ff;display:flex;align-items:center;justify-content:center;font-size:26px;">⇄</div>
+    <div style="font-size:14px;font-weight:600;color:#64748b;">Configure the transfer on the left<br>and click Run Analysis</div>
+    <div style="font-size:12px;color:#94a3b8;max-width:260px;">Outputs include fees, timing, failure rates,<br>ML-informed access risk insights, and compliance flags.</div>
+  </div>
+  <div id="results" style="display:none;"></div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+// ── Region data ──────────────────────────────────────────────
+const IE_REGIONS = ['Carlow','Cavan','Clare','Cork','Donegal','Dublin','Galway','Kerry','Kildare','Kilkenny','Laois','Leitrim','Limerick','Longford','Louth','Mayo','Meath','Monaghan','Offaly','Roscommon','Sligo','Tipperary','Waterford','Westmeath','Wexford','Wicklow'];
+const IT_REGIONS = ['Abruzzo','Basilicata','Calabria','Campania','Emilia-Romagna','Friuli-Venezia Giulia','Lazio','Liguria','Lombardia','Marche','Molise','Piemonte','Puglia','Sardegna','Sicilia','Toscana','Trentino-Alto Adige','Umbria',"Valle d'Aosta",'Veneto'];
+
+// ── PSP data ─────────────────────────────────────────────────
+const PSPS = {
+  IE: {
+    types: ['Major Bank','Credit Union','Neobank','Postal'],
+    send: {
+      'Major Bank': ['AIB','Bank of Ireland','Permanent TSB','Ulster Bank'],
+      'Credit Union': ['Dublin Central CU','Cork CU','Galway CU','Limerick CU','Waterford CU'],
+      'Neobank': ['Revolut IE','N26 Ireland','Bunq IE'],
+      'Postal': ['An Post Money']
+    },
+    recv: ['AIB','Bank of Ireland','Permanent TSB','Ulster Bank','An Post Money','Revolut IE']
+  },
+  IT: {
+    types: ['Major Bank','Coop. Bank (BCC)','Neobank','Postal'],
+    send: {
+      'Major Bank': ['Intesa Sanpaolo','UniCredit','BNL (BNP Paribas)','Banca Sella'],
+      'Coop. Bank (BCC)': ['Credito Valtellinese','Banca di Bologna','ChiantiBanca','BCC Roma'],
+      'Neobank': ['Revolut IT','N26 Italy','Hype','Tinaba'],
+      'Postal': ['Poste Italiane (BancoPosta)']
+    },
+    recv: ['Intesa Sanpaolo','UniCredit','Fineco Bank','Poste Italiane','Mediolanum','Illimity']
+  }
+};
+
+const CORP_BANKS = {
+  IE: ['AIB Corporate','Bank of Ireland Business','Citibank Ireland','BNP Paribas Ireland'],
+  IT: ['Intesa Sanpaolo Corp.','UniCredit Business','Mediobanca','Banca IMI']
+};
+
+// ── Scheme data ───────────────────────────────────────────────
+const SCHEMES = {
+  SEPA_CT:{baseFee:.2,rate:.0001,timeLabel:'12 – 36 hours',timeTypical:'typically 24 hours',failRate:2.52,rejRate:2.02,retRate:.50,color:'#2563eb'},
+  SEPA_Inst:{baseFee:.5,rate:.0001,timeLabel:'Under 10 seconds',timeTypical:'typically 1–2 minutes',failRate:2.55,rejRate:2.05,retRate:.50,color:'#0d9488'},
+  SEPA_DD:{baseFee:.2,rate:.0001,timeLabel:'22 – 50 hours',timeTypical:'typically 24–48 hours',failRate:2.60,rejRate:2.05,retRate:.55,color:'#7c3aed'}
+};
+const REJ_RISKS=[
+  {code:'AC04',label:'Account closed',pct:.42,tip:'Verify the recipient account is still active before sending.'},
+  {code:'AG01',label:'Transaction type not supported',pct:.41,tip:'Some institutions restrict specific payment types.'},
+  {code:'BE04',label:'Beneficiary address missing',pct:.40,tip:'Cross-border payments may require full address details.'},
+  {code:'AC01',label:'Invalid IBAN format',pct:.40,tip:'Double-check the IBAN checksum and country prefix.'},
+  {code:'AM04',label:'Insufficient funds',pct:.39,tip:'Ensure balance covers amount + fee before initiating.'}
+];
+const RET_RISKS=[
+  {code:'FRAD',label:'Fraud detection trigger',pct:.13,color:'#ef4444'},
+  {code:'DUPL',label:'Duplicate payment detected',pct:.13,color:'#d97706'},
+  {code:'AGNT',label:'Correspondent bank error',pct:.12,color:'#64748b'},
+  {code:'CUST',label:'Beneficiary recall request',pct:.13,color:'#64748b'}
+];
+
+// ── State ─────────────────────────────────────────────────────
+let direction='IE_IT', userType='individual', scheme='SEPA_CT', bearer='SHA';
+
+// ── Helpers ───────────────────────────────────────────────────
+function fillSelect(id, items, defaultVal){
+  const el=document.getElementById(id);
+  el.innerHTML=items.map(v=>`<option${v===defaultVal?' selected':''}>${v}</option>`).join('');
+}
+function setAmt(v){document.getElementById('amount').value=v;}
+
+function getSenderCountry(){ return direction==='IE_IT'?'IE':'IT'; }
+function getReceiverCountry(){ return direction==='IE_IT'?'IT':'IE'; }
+
+// ── Direction toggle ──────────────────────────────────────────
+function swapDirection(){
+  direction = direction==='IE_IT'?'IT_IE':'IE_IT';
+  updateRouteUI();
+  // reset results
+  document.getElementById('placeholder').style.display='flex';
+  document.getElementById('results').style.display='none';
+}
+
+function updateRouteUI(){
+  const ie2it = direction==='IE_IT';
+  const srcC = ie2it?'IE':'IT', dstC = ie2it?'IT':'IE';
+  const srcFlag = ie2it?'🇮🇪':'🇮🇹', dstFlag = ie2it?'🇮🇹':'🇮🇪';
+  const srcName = ie2it?'Ireland':'Italy', dstName = ie2it?'Italy':'Ireland';
+  const srcRegions = ie2it?IE_REGIONS:IT_REGIONS;
+  const dstRegions = ie2it?IT_REGIONS:IE_REGIONS;
+
+  document.getElementById('dir-label-short').textContent = `${srcFlag} ${srcC} → ${dstC} ${dstFlag}`;
+  document.getElementById('swap-icon').className = ie2it?'swap-icon':'swap-icon flipped';
+  document.getElementById('origin-lbl').textContent = `Origin — ${srcName} ${srcFlag}`;
+  document.getElementById('dest-lbl').textContent = `Destination — ${dstName} ${dstFlag}`;
+  fillSelect('origin', srcRegions, ie2it?'Dublin':'Lazio');
+  fillSelect('dest', dstRegions, ie2it?'Lazio':'Dublin');
+
+  // Update individual PSP type options
+  const pspTypeEl = document.getElementById('ind-psp-type');
+  if(pspTypeEl){
+    const types = PSPS[srcC].types;
+    pspTypeEl.innerHTML = types.map(t=>`<option>${t}</option>`).join('');
+    document.getElementById('psp-type-lbl').textContent = `Sender PSP Type`;
+    document.getElementById('send-psp-lbl').textContent = `Sender Bank / Institution`;
+    document.getElementById('recv-psp-lbl').textContent = `Receiver PSP`;
+    updateSendPspList();
+    fillSelect('ind-recv-psp', PSPS[dstC].recv);
+  }
+
+  // Update corporate PSP lists
+  const csl = document.getElementById('corp-send-psp');
+  const crl = document.getElementById('corp-recv-psp');
+  if(csl) fillSelect('corp-send-psp', CORP_BANKS[srcC]);
+  if(crl) fillSelect('corp-recv-psp', CORP_BANKS[dstC]);
+  document.getElementById('corp-send-lbl').textContent = `Sender Bank (${srcC})`;
+  document.getElementById('corp-recv-lbl').textContent = `Receiver Bank (${dstC})`;
+}
+
+function updateSendPspList(){
+  const srcC = getSenderCountry();
+  const pspType = document.getElementById('ind-psp-type')?.value || 'Major Bank';
+  const list = PSPS[srcC].send[pspType] || PSPS[srcC].send['Major Bank'];
+  fillSelect('ind-send-psp', list);
+}
+
+// ── Tab switcher ──────────────────────────────────────────────
+function switchTab(t){
+  userType=t;
+  document.getElementById('ind-fields').style.display=t==='individual'?'block':'none';
+  document.getElementById('corp-fields').style.display=t==='corporate'?'block':'none';
+  document.getElementById('tab-ind').className='tab-btn'+(t==='individual'?' active':'');
+  document.getElementById('tab-corp').className='tab-btn'+(t==='corporate'?' active':'');
+  if(t==='corporate'){
+    document.getElementById('card-Inst').classList.remove('disabled');
+    document.getElementById('inst-block-note').style.display='none';
+  }
+}
+
+// ── Channel change ────────────────────────────────────────────
+function onChannelChange(){
+  const ch=document.getElementById('ind-channel').value;
+  const instCard=document.getElementById('card-Inst');
+  const note=document.getElementById('inst-block-note');
+  if(ch==='Branch'){
+    instCard.classList.add('disabled');
+    note.style.display='block';
+    if(scheme==='SEPA_Inst') selectScheme('SEPA_CT');
+  } else {
+    instCard.classList.remove('disabled');
+    note.style.display='none';
+  }
+}
+function onPspTypeChange(){ updateSendPspList(); }
+
+// ── Scheme & bearer ───────────────────────────────────────────
+function trySelectInst(){
+  const ch=userType==='corporate'?'Mobile App':(document.getElementById('ind-channel')?.value||'Mobile App');
+  if(ch==='Branch') return;
+  selectScheme('SEPA_Inst');
+}
+function selectScheme(s){
+  scheme=s;
+  ['CT','Inst','DD'].forEach(k=>{
+    const c=document.getElementById('card-'+k);
+    c.className='scheme-card';
+    if('SEPA_'+k===s) c.classList.add(k==='CT'?'sel-ct':k==='Inst'?'sel-inst':'sel-dd');
+  });
+}
+function selectBearer(b){
+  bearer=b;
+  ['SHA','OUR','BEN'].forEach(k=>{ document.getElementById('btn-'+k).className='bearer-btn'+(k===b?' active':''); });
+}
+
+// ── ML Insights ───────────────────────────────────────────────
+function getMLInsights(amount){
+  const insights=[];
+  const srcC=getSenderCountry(), dstC=getReceiverCountry();
+  if(userType==='individual'){
+    const age=document.getElementById('ind-age').value;
+    const ch=document.getElementById('ind-channel').value;
+    const pspType=document.getElementById('ind-psp-type').value;
+
+    if(ch==='Branch'&&scheme==='SEPA_Inst')
+      insights.push({type:'danger',icon:'🚫',title:'Access Blocked — Branch Cannot Reach SEPA Instant',
+        body:'SEPA Instant is only accessible via Mobile App or Web Portal. Branch-based senders are structurally excluded from instant payments regardless of preference.'});
+
+    if(age==='75+')
+      insights.push({type:'warn',icon:'⚠️',title:'Access Barrier Risk (ML Insight)',
+        body:`34.7% of 75+ users rely on Branch as their primary channel, which provides <b>0% access</b> to SEPA Instant. For this cohort, limited use of instant payments reflects a structural barrier, not a preference. Our "70.9% preference-driven" conclusion does <u>not</u> apply to this group.`});
+
+    if(age==='75+'&&(scheme==='SEPA_CT'||scheme==='SEPA_DD'))
+      insights.push({type:'success',icon:'ℹ️',title:'Stable Instrument — Expected Low Failure Rate',
+        body:'75+ users show average failure rates despite lower digital proficiency, likely because they predominantly use CT and DD — proven, low-failure instruments. If migrated to SEPA Instant, a temporary rise in failure rate should be anticipated and flagged.'});
+
+    if(scheme==='SEPA_Inst')
+      insights.push({type:'info',icon:'📊',title:'Selection Bias Note (ML-8 Finding)',
+        body:'Our ML model found no significant age difference among SEPA Instant users — but this only reflects those who already have access. Users excluded by channel or PSP constraints are absent from the distribution. The finding is valid within the accessible population only.'});
+
+    const isCU = pspType==='Credit Union'||pspType==='Coop. Bank (BCC)';
+    if(isCU){
+      const cuLabel = srcC==='IE'?'Credit Unions':'Cooperative Banks (BCC)';
+      insights.push({type:'warn',icon:'🏦',title:`${cuLabel} — Instant Readiness Risk`,
+        body:`Only <b>37%</b> of ${cuLabel} are technically instant-ready. Critically, ${cuLabel} are also heavily branch-based — meaning infrastructure upgrades alone are insufficient. They must <u>also</u> offer a Mobile App or Web Portal. Both conditions must be met for customers to reach SEPA Instant.`});
+    }
+  }
+  if(amount>10000)
+    insights.push({type:'warn',icon:'🔍',title:'AML Compliance Flag',
+      body:`€${amount.toLocaleString('en-IE')} may trigger Anti-Money Laundering review. ${userType==='corporate'?'Prepare source-of-funds documentation and ensure the purpose code matches actual intent.':'Be prepared to provide proof of funds and transaction purpose to your bank.'}`});
+
+  insights.push({type:'info',icon:'⚖️',title:'Execution Fairness — Confirmed (D-1, Kruskal-Wallis)',
+    body:'Once a payment enters the system it is processed equally regardless of sender age or income — fees and speed are uniform. However, <u>equal treatment at execution ≠ equal access</u>. Getting into faster instruments is not equally easy for all user profiles (see insights above).'});
+  return insights;
+}
+
+function insightHTML(ins,i){
+  const cls={danger:'insight-danger',warn:'insight-warn',info:'insight-info',success:'insight-success'}[ins.type];
+  const tc={danger:'#991b1b',warn:'#92400e',info:'#1e40af',success:'#065f46'}[ins.type];
+  return `<div class="insight ${cls} fade-in" style="animation-delay:${.05*i}s;">
+    <span class="insight-icon">${ins.icon}</span>
+    <div><div style="font-weight:700;color:${tc};margin-bottom:2px;">${ins.title}</div>
+    <div style="color:#475569;">${ins.body}</div></div></div>`;
+}
+
+// ── Simulate ──────────────────────────────────────────────────
+function simulate(){
+  const amount=parseFloat(document.getElementById('amount').value)||500;
+  const origin=document.getElementById('origin').value;
+  const dest=document.getElementById('dest').value;
+  const s=SCHEMES[scheme];
+  const fee=Math.round((s.baseFee+amount*s.rate)*100)/100;
+  const feeRate=(fee/amount*100).toFixed(3);
+  const srcC=getSenderCountry(), dstC=getReceiverCountry();
+  const srcFlag=srcC==='IE'?'🇮🇪':'🇮🇹', dstFlag=dstC==='IT'?'🇮🇹':'🇮🇪';
+
+  let senderPsp='', receiverPsp='';
+  if(userType==='individual'){
+    senderPsp=document.getElementById('ind-send-psp').value;
+    receiverPsp=document.getElementById('ind-recv-psp').value;
+  } else {
+    senderPsp=document.getElementById('corp-send-psp').value;
+    receiverPsp=document.getElementById('corp-recv-psp').value;
+  }
+
+  let bearerNote,bearerColor;
+  if(bearer==='SHA'){bearerNote=`You pay <b>€${fee.toFixed(2)}</b> in fees. The recipient's bank may charge a similar fee on their end.`;bearerColor='#d97706';}
+  else if(bearer==='OUR'){bearerNote=`You cover all fees: <b>€${fee.toFixed(2)}</b>. Recipient receives the full <b>€${amount.toFixed(2)}</b>.`;bearerColor='#059669';}
+  else{bearerNote=`Fee deducted from amount — recipient receives <b>€${(amount-fee).toFixed(2)}</b> of your €${amount.toFixed(2)}.`;bearerColor='#64748b';}
+
+  const riskColor=s.failRate<2?'#059669':s.failRate<3?'#d97706':'#dc2626';
+  const insights=getMLInsights(amount);
+
+  const html=`<div class="fade-in">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+    <div style="width:8px;height:8px;border-radius:50%;background:#10b981;flex-shrink:0;"></div>
+    <span style="font-size:12px;color:#64748b;">${srcFlag} ${origin} → ${dest} ${dstFlag} &nbsp;·&nbsp; ${senderPsp} → ${receiverPsp}</span>
+    <span style="margin-left:auto;font-size:11px;background:#f1f5f9;color:#475569;padding:2px 8px;border-radius:4px;font-weight:600;">${scheme.replace('_',' ')}</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+    <div class="metric-card">
+      <div class="lbl">Transaction Fee</div>
+      <div style="font-size:28px;font-weight:700;color:${s.color};font-variant-numeric:tabular-nums;">€${fee.toFixed(2)}</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Rate: ${feeRate}% · €${s.baseFee.toFixed(2)} base + 0.01% × amount</div>
+    </div>
+    <div class="metric-card">
+      <div class="lbl">Estimated Arrival</div>
+      <div style="font-size:18px;font-weight:700;color:#1e293b;margin-top:3px;">${s.timeLabel}</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:3px;">${s.timeTypical}</div>
+    </div>
+    <div class="metric-card">
+      <div class="lbl">Historical Failure Rate</div>
+      <div style="font-size:28px;font-weight:700;color:${riskColor};font-variant-numeric:tabular-nums;">${s.failRate.toFixed(2)}%</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Rejected ${s.rejRate.toFixed(2)}% + Returned ${s.retRate.toFixed(2)}%</div>
+    </div>
+    <div class="metric-card">
+      <div class="lbl">FX Risk</div>
+      <div style="font-size:18px;font-weight:700;color:#059669;margin-top:3px;">None</div>
+      <div style="font-size:11px;color:#94a3b8;margin-top:2px;">Both IE & IT use EUR — 0 FX conversions in 749,706 D08 records</div>
+    </div>
+  </div>
+  <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 13px;font-size:12px;color:#92400e;margin-bottom:14px;">
+    <b>Fee Arrangement (${bearer}):</b> ${bearerNote}
+  </div>
+  <hr class="divider">
+  <div class="lbl" style="margin-bottom:10px;">Rejection Risk Breakdown</div>
+  ${REJ_RISKS.map((r,i)=>`
+  <div style="margin-bottom:9px;animation:fadeUp .3s ease ${.06+.04*i}s both;">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <div style="display:flex;align-items:center;gap:7px;">
+        <span style="font-size:10px;font-family:monospace;background:#f1f5f9;padding:2px 5px;border-radius:4px;color:#64748b;">${r.code}</span>
+        <span style="font-size:12px;color:#475569;">${r.label}</span>
+      </div>
+      <span style="font-size:12px;font-weight:700;color:#d97706;">${r.pct.toFixed(2)}%</span>
+    </div>
+    <div class="risk-bar"><div class="risk-fill" style="width:${r.pct/0.5*100}%;background:#fbbf24;"></div></div>
+  </div>`).join('')}
+  <hr class="divider">
+  <div class="lbl" style="margin-bottom:10px;">Post-Dispatch Return Risks</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+    ${RET_RISKS.map(r=>`<div style="background:#fff;border:1.5px solid #f1f5f9;border-radius:8px;padding:10px 12px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+        <span style="font-size:10px;font-family:monospace;color:#94a3b8;">${r.code}</span>
+        <span style="font-size:12px;font-weight:700;color:${r.color};">${r.pct.toFixed(2)}%</span>
+      </div>
+      <div style="font-size:12px;color:#475569;">${r.label}</div>
+    </div>`).join('')}
+  </div>
+  <hr class="divider">
+  <div class="lbl" style="margin-bottom:10px;">ML-Informed Risk Insights</div>
+  ${insights.map((ins,i)=>insightHTML(ins,i)).join('')}
+  <hr class="divider">
+  <div class="lbl" style="margin-bottom:8px;">Recommended Actions</div>
+  ${REJ_RISKS.slice(0,3).map(r=>`<div style="display:flex;gap:8px;margin-bottom:7px;font-size:12px;color:#64748b;">
+    <span style="color:#2563eb;flex-shrink:0;">▸</span>
+    <span><b style="color:#475569;">${r.label}:</b> ${r.tip}</span>
+  </div>`).join('')}
+  ${scheme==='SEPA_DD'?`<div style="display:flex;gap:8px;margin-bottom:7px;font-size:12px;color:#64748b;"><span style="color:#7c3aed;flex-shrink:0;">▸</span><span><b style="color:#475569;">Mandate required:</b> Ensure a signed SEPA Direct Debit mandate is in place before initiating.</span></div>`:''}
+  </div>`;
+
+  document.getElementById('placeholder').style.display='none';
+  const r=document.getElementById('results');
+  r.style.display='block'; r.innerHTML=html;
+}
+
+// ── Init ──────────────────────────────────────────────────────
+updateRouteUI();
+selectScheme('SEPA_CT');
+selectBearer('SHA');
+</script>
